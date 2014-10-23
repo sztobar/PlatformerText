@@ -19,6 +19,7 @@ namespace PlatformerTest
         bool _standing = true;
         bool _climbing = false;
         float _climbingVelocity = 0f;
+        Direction _lastDirection;
 
         #endregion
         #region helper
@@ -31,8 +32,14 @@ namespace PlatformerTest
             : base(texture, new Vector2(60, 60), 32, 64)
         {
             _hotSpot = new Vector2(_width / 2, _height);
-            Sprite.AddAnimation("left", 0, 0, 100, 130, 8, 0.1f);
-            _animation.CurrentAnimation = "left";
+            //animacje
+            Sprite.AddAnimation("jump", 0, 0, 100, 130, 8, 0.1f);
+            Sprite.AddAnimation("leftStop",900,130,100,130,1,0.1f);
+            Sprite.AddAnimation("runLeft", 900, 130, 100, 130, 8, 0.1f);
+            Sprite.AddAnimation("rightStop", 0, 130, 100, 130, 1, 0.1f);
+            Sprite.AddAnimation("runRight", 0, 130, 100, 130, 8, 0.1f);
+            //end of animacje
+            _animation.CurrentAnimation = "rightStop";
             _animation.Position = _position;
             
 
@@ -134,12 +141,27 @@ namespace PlatformerTest
                 _direction == Direction.Left)
             {
                 _direction = Direction.Right;
+                Sprite.CurrentAnimation = "runRight";
             }
             else if (keyState.IsKeyDown(Keys.Left) &&
                 _direction == Direction.Right)
             {
                 _direction = Direction.Left;
+                Sprite.CurrentAnimation = "runLeft";
             }
+            if (!keyState.IsKeyDown(Keys.Right) && !keyState.IsKeyDown(Keys.Left))
+            {
+                if (_lastDirection == Direction.Left)
+                {
+                    Sprite.CurrentAnimation = "leftStop";
+                }
+                else
+                {
+                    Sprite.CurrentAnimation = "rightStop";
+                }
+                
+            }
+            _lastDirection = _direction;
         }
 
         public void CheckCollisions(float dt)
@@ -208,11 +230,11 @@ namespace PlatformerTest
             _velocity.Y = Math.Min(_velocity.Y, _maxYVelocity);
         }
 
-        public void Update(float dt, KeyboardState keyState)
+        public void Update(float dt, KeyboardState keyState, GameTime gameTime)
         {
             GetInput(dt, keyState);
             CheckCollisions(dt);
-
+            _animation.Update(gameTime);
             base.Update(dt);
         }
 

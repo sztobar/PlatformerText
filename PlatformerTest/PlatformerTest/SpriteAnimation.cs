@@ -69,7 +69,7 @@ namespace PlatformerTest
         public int X
         {
             get { return (int)v2Position.X; }
-            public set
+            set
             {
                 v2LastPosition.X = v2Position.X;
                 v2Position.X = value;
@@ -290,7 +290,7 @@ namespace PlatformerTest
         public void Draw(SpriteBatch spriteBatch, int XOffset, int YOffset)
         {
             if (bAnimating)
-                spriteBatch.Draw(t2dTexture, (v2Position + new Vector2(XOffset, YOffset) + v2Center),
+                spriteBatch.Draw(t2dTexture, v2Position,
                                 CurrentFrameAnimation.FrameRectangle, colorTint,
                                 fRotation, v2Center, 1f, SpriteEffects.None, 0);
         }

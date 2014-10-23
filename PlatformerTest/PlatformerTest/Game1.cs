@@ -81,7 +81,7 @@ namespace PlatformerTest
             KeyboardState keyState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds * 10f;
             level.Update(gameTime, keyState);
-            player.Update(dt, keyState);
+            player.Update(dt, keyState, gameTime);
             base.Update(gameTime);
         }
 
