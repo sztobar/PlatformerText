@@ -18,6 +18,11 @@ namespace PlatformerTest
         protected int _height;
         protected float _rotation = 0f;
         protected Vector2 _hotSpot = new Vector2(0f, 0f);
+        protected SpriteAnimation _animation;
+        public SpriteAnimation Sprite
+        {
+            get { return _animation; }
+        } 
 
         #endregion
         #region properties
@@ -43,6 +48,7 @@ namespace PlatformerTest
             _position = position;
             _width = width;
             _height = height;
+            _animation = new SpriteAnimation(texture);
         }
 
         public ActiveObject(Texture2D texture, Rectangle rectangle)
@@ -52,19 +58,27 @@ namespace PlatformerTest
             _position.Y = rectangle.Y;
             _width = rectangle.Width;
             _height = rectangle.Height;
+            _animation = new SpriteAnimation(texture);
         }
+
+        
+
+        
+
 
         public virtual void Update(float dt)
         {
             _position.X += (int)_direction * _velocity.X;
             _position.Y += _velocity.Y;
+            _animation.Position = _position;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             Rectangle drawRectangle = new Rectangle((int)_position.X, (int)_position.Y, _width, _height);
-            spriteBatch.Draw(_texture, drawRectangle, Color.White);
+            //spriteBatch.Draw(_texture, drawRectangle, Color.White);
             //spriteBatch.Draw(_texture, drawRectangle, null, Color.White, _rotation, _hotSpot, SpriteEffects.None, 0f);
+            _animation.Draw(spriteBatch, (int)_position.X, (int)_position.Y);
         }
     }
 }

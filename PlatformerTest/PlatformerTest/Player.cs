@@ -31,6 +31,11 @@ namespace PlatformerTest
             : base(texture, new Vector2(60, 60), 32, 64)
         {
             _hotSpot = new Vector2(_width / 2, _height);
+            Sprite.AddAnimation("left", 0, 0, 100, 130, 8, 0.1f);
+            _animation.CurrentAnimation = "left";
+            _animation.Position = _position;
+            
+
         }
 
         public void GetInput(float dt, KeyboardState keyState)
