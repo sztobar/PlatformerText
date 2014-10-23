@@ -30,7 +30,7 @@ namespace PlatformerTest
         public Player(Texture2D texture)
             : base(texture, new Vector2(60, 60), 32, 64)
         {
-            _hotSpot = new Vector2(_width / 2, _height);
+            //_hotSpot = new Vector2(_width / 2, _height);
         }
 
         public void GetInput(float dt, KeyboardState keyState)
@@ -144,6 +144,8 @@ namespace PlatformerTest
             int top = (int)_position.Y / TILE_SIZE;
             int right = ((int)_position.X + _width - 1) / TILE_SIZE;
             int bottom = ((int)_position.Y + _height - 1) / TILE_SIZE;
+            int hotspotX = (int)_position.X + _width / 2;
+            int hotspotY = (int)_position.Y + _height;
             int [,] tiles = Game1.level.Tiles;
             int levelRightBoundary = tiles.GetLength(0);
             int levelBottomBoundary = tiles.GetLength(1);
@@ -176,7 +178,7 @@ namespace PlatformerTest
             right = (xPosition + _width - 1) / TILE_SIZE;
             _velocity.Y += _gravity * dt;
 
-            if (_velocity.Y >= 0)
+            if (_velocity.Y > 0)
             {
                 for (int x = left; x <= right; ++x)
                 {
@@ -185,6 +187,12 @@ namespace PlatformerTest
                         _velocity.Y = Math.Min(_velocity.Y, ((bottom + 1) * TILE_SIZE) - _position.Y - _height);
                         _standing = _velocity.Y == 0;
                         break;
+                    }
+                    else if (isSlope(tiles[x, bottom]))
+                    {
+                        int slopeHeight = _velocity.X;
+                         _velocity.Y = Math.Min(_velocity.Y, (bottom * TILE_SIZE) - _position.Y - _height + slopeHeight));
+
                     }
                 }
             }
@@ -201,6 +209,11 @@ namespace PlatformerTest
                 }
             }
             _velocity.Y = Math.Min(_velocity.Y, _maxYVelocity);
+        }
+
+        private bool isSlope(int slopeType)
+        {
+            return slopeType == 6;
         }
 
         public void Update(float dt, KeyboardState keyState)
