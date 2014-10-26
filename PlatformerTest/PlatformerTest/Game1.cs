@@ -53,7 +53,7 @@ namespace PlatformerTest
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player = new Player(this.Content.Load<Texture2D>("player"));
+            player = new Player(this.Content.Load<Texture2D>("playerSprite"));
             player._collisionTexture = this.Content.Load<Texture2D>("collision");
             level.SetTileset(this.Content.Load<Texture2D>("background"));
         }
@@ -81,7 +81,7 @@ namespace PlatformerTest
             KeyboardState keyState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds * 10f;
             level.Update(gameTime, keyState);
-            player.Update(dt, keyState);
+            player.Update(dt, keyState, gameTime);
             base.Update(gameTime);
         }
 

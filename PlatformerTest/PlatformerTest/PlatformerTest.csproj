@@ -74,7 +74,9 @@
   <ItemGroup>
     <Compile Include="ActiveObject.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="FrameAnimation.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="MobileAnimation.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="PlatformMovement.cs" />
     <Compile Include="Player.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Sprite.cs" />
+    <Compile Include="SpriteAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
