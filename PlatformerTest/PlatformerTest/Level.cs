@@ -125,7 +125,7 @@ namespace PlatformerTest
                 gridFromY = playerBoundingBox.Top / TILE_SIZE,
                 gridToX = (playerBoundingBox.Right - 1) / TILE_SIZE,
                 gridToY = (playerBoundingBox.Bottom - 1) / TILE_SIZE;
-            
+
             for (int x = gridFromX, len_x = gridToX; x <= len_x; ++x)
             {
                 for (int y = gridFromY, len_y = gridToY; y <= len_y; ++y)

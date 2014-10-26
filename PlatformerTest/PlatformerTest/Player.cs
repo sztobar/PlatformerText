@@ -14,8 +14,8 @@ namespace PlatformerTest
         float _deceleration = 10f;
         float _gravity = 6f;
         float _jumping = 15f;
-        float _maxXVelocity = 1f;
-        float _maxYVelocity = 1f;
+        float _maxXVelocity = 3f;
+        float _maxYVelocity = 3f;
         bool _standing = true;
         bool _climbing = false;
         float _climbingVelocity = 0f;
@@ -159,7 +159,11 @@ namespace PlatformerTest
 
             if (_direction == Direction.Right)
             {
-                for (int y = top; y <= bottom; ++y)
+                if (onSlope && tiles[right + 1, bottom] == 1)
+                {
+                    //_velocity.X = Math.Min(_velocity.X, ((right + 1) * TILE_SIZE) - (_position.X + _width));
+                }
+                else for (int y = top; y <= bottom; ++y)
                 {
                     if (right + 1 == levelRightBoundary || tiles[right + 1, y] == 1)
                     {
