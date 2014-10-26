@@ -25,6 +25,8 @@ namespace PlatformerTest
         int _playerFrameHeight = 130;
         int _playerFrameWidth = 100;
         float _playerFrameLength = 0.1f;
+        public float _playerOffset = 462;
+        public float _playerHeightOffset = 513;
 
         #endregion
         #region helper
@@ -152,19 +154,20 @@ namespace PlatformerTest
                     int rightCheck = ((int)_position.X + _width - 1 + (TILE_SIZE / 4)) / TILE_SIZE;
                     
                     int [,] tiles = Game1.level.Tiles;
-
-                    if (tiles[rightCheck, top] == 3)
-                    {
-                        _climbing = true;
-                        _velocity.Y = 0;
-                        _position.X = rightCheck * TILE_SIZE;
-                    }
-                    else if (tiles[leftCheck, top] == 3)
-                    {
-                        _climbing = true;
-                        _velocity.Y = 0;
-                        _position.X = leftCheck * TILE_SIZE;
-                    }
+                    if (rightCheck <= Game1.level.mapWidth-1 && leftCheck>=0) {
+                        if (tiles[rightCheck, top] == 3)
+                        {
+                            _climbing = true;
+                            _velocity.Y = 0;
+                            _position.X = rightCheck * TILE_SIZE;
+                        }
+                        else if (tiles[leftCheck, top] == 3)
+                        {
+                            _climbing = true;
+                            _velocity.Y = 0;
+                            _position.X = leftCheck * TILE_SIZE;
+                        }
+                    }                  
 
                 }
             }
@@ -288,7 +291,7 @@ namespace PlatformerTest
         }
 
         public void updateMap() { 
-            
+           
         }
 
         public void Update(float dt, KeyboardState keyState, GameTime gameTime)
@@ -330,15 +333,15 @@ namespace PlatformerTest
                         && Sprite.CurrentAnimation != "preJumpRight"
                         && Sprite.CurrentAnimation != "preJumpLeft"
                         && Sprite.CurrentAnimation != "jumpUpLoopRight"
-                        && _velocity.Y>-1f
+                        && _velocity.Y>-3f
                         ) {
                             //jump loop up right
                             Sprite.CurrentAnimation = "jumpUpLoopRight";
                     }
 
                     if (_direction == Direction.Right
-                        && _velocity.Y > -1f
-                        && _velocity.Y < 1f
+                        && _velocity.Y > -3f
+                        && _velocity.Y < 3f
                         && Sprite.CurrentAnimation != "jumpMaxPointRight"
                         ) { 
                         // jump Max point right
@@ -346,7 +349,7 @@ namespace PlatformerTest
                     }
 
                     if(_direction == Direction.Right
-                        && _velocity.Y < 1f
+                        && _velocity.Y < 3f
                         && Sprite.CurrentAnimation != "landingRight"
                         && Sprite.CurrentAnimation != "jumpDownLoopRight"
                         ){
@@ -360,7 +363,7 @@ namespace PlatformerTest
                         && Sprite.CurrentAnimation != "preJumpRight"
                         && Sprite.CurrentAnimation != "preJumpLeft"
                         && Sprite.CurrentAnimation != "jumpUpLoopLeft"
-                        && _velocity.Y > -1f
+                        && _velocity.Y > -3f
                         )
                     {
                         //jump loop up Left
@@ -368,8 +371,8 @@ namespace PlatformerTest
                     }
 
                     if (_direction == Direction.Left
-                        && _velocity.Y > -1f
-                        && _velocity.Y < 1f
+                        && _velocity.Y > -3f
+                        && _velocity.Y < 3f
                         && Sprite.CurrentAnimation != "jumpMaxPointLeft"
                         )
                     {
@@ -378,7 +381,7 @@ namespace PlatformerTest
                     }
 
                     if (_direction == Direction.Left
-                        && _velocity.Y < 1f
+                        && _velocity.Y < 3f
                         && Sprite.CurrentAnimation != "landingLeft"
                         && Sprite.CurrentAnimation != "jumpDownLoopLeft"
                         )
