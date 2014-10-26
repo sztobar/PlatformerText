@@ -14,8 +14,8 @@ namespace PlatformerTest
         float _deceleration = 10f;
         float _gravity = 6f;
         float _jumping = 15f;
-        float _maxXVelocity = 5f;
-        float _maxYVelocity = 6f;
+        float _maxXVelocity = 1f;
+        float _maxYVelocity = 1f;
         bool _standing = true;
         bool _climbing = false;
         float _climbingVelocity = 0f;
@@ -126,14 +126,21 @@ namespace PlatformerTest
         private void GetDirection(float dt, KeyboardState keyState)
         {
             if (keyState.IsKeyDown(Keys.Right) &&
-                _direction == Direction.Left)
+                !keyState.IsKeyDown(Keys.Left) &&
+                _direction != Direction.Right)
             {
                 _direction = Direction.Right;
             }
             else if (keyState.IsKeyDown(Keys.Left) &&
-                _direction == Direction.Right)
+                !keyState.IsKeyDown(Keys.Right) &&
+                _direction != Direction.Left)
             {
                 _direction = Direction.Left;
+            }
+            else if (keyState.IsKeyDown(Keys.Left) &&
+                keyState.IsKeyDown(Keys.Right))
+            {
+                _direction = Direction.NoDirection;
             }
         }
 
@@ -144,11 +151,11 @@ namespace PlatformerTest
             int top = (int)_position.Y / TILE_SIZE;
             int right = ((int)_position.X + _width - 1) / TILE_SIZE;
             int bottom = ((int)_position.Y + _height - 1) / TILE_SIZE;
-            int hotspotX = (int)_position.X + _width / 2;
-            int hotspotY = (int)_position.Y + _height;
             int [,] tiles = Game1.level.Tiles;
             int levelRightBoundary = tiles.GetLength(0);
             int levelBottomBoundary = tiles.GetLength(1);
+            int center = ((int)_position.X + (_width / 2)) / TILE_SIZE;
+            bool onSlope = tiles[center, bottom] == 6;
 
             if (_direction == Direction.Right)
             {
@@ -174,25 +181,43 @@ namespace PlatformerTest
             }
 
             int xPosition = (int)_position.X + ((int)_direction * (int)_velocity.X);
+            center = ((int)_position.X + (_width / 2)) / TILE_SIZE;
+            int hotspotX = (int)_position.X + _width / 2;
+            int hotspotY = (int)_position.Y + _height;
             left = xPosition / TILE_SIZE;
             right = (xPosition + _width - 1) / TILE_SIZE;
             _velocity.Y += _gravity * dt;
 
-            if (_velocity.Y > 0)
+            if (_velocity.Y >= 0)
             {
-                for (int x = left; x <= right; ++x)
+                if (tiles[center, bottom - 1] == 6)
                 {
-                    if (bottom + 1 == levelBottomBoundary || tiles[x, bottom + 1] == 1 || tiles[x, bottom + 1] == 2)
+                    int slopeHeight = hotspotX - (center * TILE_SIZE);
+                    _velocity.Y = ((bottom - 1) * TILE_SIZE) + (TILE_SIZE - slopeHeight) - _position.Y - _height;
+                    _standing = true;
+                }
+                else if (tiles[center, bottom] == 6)
+                {
+                    int slopeHeight = hotspotX - (center * TILE_SIZE);
+                    _velocity.Y = (bottom * TILE_SIZE) + (TILE_SIZE - slopeHeight) - _position.Y - _height;
+                    _standing = true;
+                }
+                else if (bottom + 1 != levelBottomBoundary && tiles[center, bottom + 1] == 6)
+                {
+                    int slopeHeight = hotspotX - (center * TILE_SIZE);
+                    _velocity.Y = ((bottom + 1) * TILE_SIZE) + (TILE_SIZE - slopeHeight) - _position.Y - _height;
+                    _standing = true;
+                }
+                else
+                {
+                    for (int x = left; x <= right; ++x)
                     {
-                        _velocity.Y = Math.Min(_velocity.Y, ((bottom + 1) * TILE_SIZE) - _position.Y - _height);
-                        _standing = _velocity.Y == 0;
-                        break;
-                    }
-                    else if (isSlope(tiles[x, bottom]))
-                    {
-                        int slopeHeight = _velocity.X;
-                         _velocity.Y = Math.Min(_velocity.Y, (bottom * TILE_SIZE) - _position.Y - _height + slopeHeight));
-
+                        if (bottom + 1 == levelBottomBoundary || tiles[x, bottom + 1] == 1 || tiles[x, bottom + 1] == 2)
+                        {
+                            _velocity.Y = Math.Min(_velocity.Y, ((bottom + 1) * TILE_SIZE) - _position.Y - _height);
+                            _standing = _velocity.Y == 0;
+                            break;
+                        }
                     }
                 }
             }
@@ -209,11 +234,6 @@ namespace PlatformerTest
                 }
             }
             _velocity.Y = Math.Min(_velocity.Y, _maxYVelocity);
-        }
-
-        private bool isSlope(int slopeType)
-        {
-            return slopeType == 6;
         }
 
         public void Update(float dt, KeyboardState keyState)
