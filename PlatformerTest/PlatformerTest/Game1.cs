@@ -25,8 +25,8 @@ namespace PlatformerTest
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = 512;
-            graphics.PreferredBackBufferHeight = 448;
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 896;
 
             level = new Level();
             Content.RootDirectory = "Content";
@@ -100,6 +100,7 @@ namespace PlatformerTest
             level.DrawGrid(spriteBatch);
             level.DrawIntersectingGrid(spriteBatch, player);
             spriteBatch.End();
+            
 
             base.Draw(gameTime);
         }

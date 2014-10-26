@@ -76,7 +76,6 @@
     <Compile Include="Direction.cs" />
     <Compile Include="FrameAnimation.cs" />
     <Compile Include="Level.cs" />
-    <Compile Include="MobileAnimation.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="PlatformMovement.cs" />
     <Compile Include="Player.cs" />

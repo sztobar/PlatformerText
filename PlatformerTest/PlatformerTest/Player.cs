@@ -42,7 +42,7 @@ namespace PlatformerTest
             #region animations
 
                 //run animations
-                Sprite.AddAnimation("runLeft", 900, 130, _playerFrameWidth, _playerFrameHeight, 8, _playerFrameLength);
+                Sprite.AddAnimation("runLeft", 800, 130, _playerFrameWidth, _playerFrameHeight, 8, _playerFrameLength);
                 Sprite.AddAnimation("runRight", 0, 130, _playerFrameWidth, _playerFrameHeight, 8, _playerFrameLength);
                 //idle animations 
                 Sprite.AddAnimation("rightStop", 0, 260, _playerFrameWidth, _playerFrameHeight, 1, 1f, "rightStop2");
@@ -285,6 +285,10 @@ namespace PlatformerTest
                 }
             }
             _velocity.Y = Math.Min(_velocity.Y, _maxYVelocity);
+        }
+
+        public void updateMap() { 
+            
         }
 
         public void Update(float dt, KeyboardState keyState, GameTime gameTime)
