@@ -18,8 +18,13 @@ namespace PlatformerTest
         float _maxYVelocity = 6f;
         bool _standing = true;
         bool _climbing = false;
+        bool _jumpingStatus = false;
+        bool _landing = false;
         float _climbingVelocity = 0f;
         Direction _lastDirection;
+        int _playerFrameHeight = 130;
+        int _playerFrameWidth = 100;
+        float _playerFrameLength = 0.1f;
 
         #endregion
         #region helper
@@ -32,13 +37,34 @@ namespace PlatformerTest
             : base(texture, new Vector2(60, 60), 32, 64)
         {
             _hotSpot = new Vector2(_width / 2, _height);
-            //animacje
-            Sprite.AddAnimation("jump", 0, 0, 100, 130, 8, 0.1f);
-            Sprite.AddAnimation("leftStop",900,130,100,130,1,0.1f);
-            Sprite.AddAnimation("runLeft", 900, 130, 100, 130, 8, 0.1f);
-            Sprite.AddAnimation("rightStop", 0, 130, 100, 130, 1, 0.1f);
-            Sprite.AddAnimation("runRight", 0, 130, 100, 130, 8, 0.1f);
-            //end of animacje
+            //animations
+
+            #region animations
+
+                //run animations
+                Sprite.AddAnimation("runLeft", 900, 130, _playerFrameWidth, _playerFrameHeight, 8, _playerFrameLength);
+                Sprite.AddAnimation("runRight", 0, 130, _playerFrameWidth, _playerFrameHeight, 8, _playerFrameLength);
+                //idle animations 
+                Sprite.AddAnimation("rightStop", 0, 260, _playerFrameWidth, _playerFrameHeight, 1, 1f, "rightStop2");
+                Sprite.AddAnimation("rightStop2", 100, 260, _playerFrameWidth, _playerFrameHeight, 1, 1f, "rightStop");
+                Sprite.AddAnimation("leftStop", 300, 260, _playerFrameWidth, _playerFrameHeight, 1, 1f, "leftStop2");
+                Sprite.AddAnimation("leftStop2", 400, 260, _playerFrameWidth, _playerFrameHeight, 1, 1f, "leftStop");
+                //jump right animations
+                Sprite.AddAnimation("preJumpRight", 0, 0, _playerFrameWidth, _playerFrameHeight, 3, _playerFrameLength, "jumpUpLoopRight");
+                Sprite.AddAnimation("jumpUpLoopRight", 300, 0, _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
+                Sprite.AddAnimation("jumpMaxPointRight", 400, 0, _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
+                Sprite.AddAnimation("jumpDownLoopRight", 500, 0, _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
+                Sprite.AddAnimation("landingRight", 600, 0, _playerFrameWidth, _playerFrameHeight, 4, _playerFrameLength, "rightStop");
+                //jump left animations
+                Sprite.AddAnimation("preJumpLeft", 1000, 0, _playerFrameWidth, _playerFrameHeight, 3,  _playerFrameLength, "jumpUpLoopLeft");
+                Sprite.AddAnimation("jumpUpLoopLeft", 1300, 0,  _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
+                Sprite.AddAnimation("jumpMaxPointLeft", 1400, 0,  _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
+                Sprite.AddAnimation("jumpDownLoopLeft", 1500, 0, _playerFrameWidth, _playerFrameHeight, 1,_playerFrameLength);
+                Sprite.AddAnimation("landingLeft",1600,0, _playerFrameWidth, _playerFrameHeight,4,_playerFrameLength);
+                //end of animations
+
+            #endregion
+
             _animation.CurrentAnimation = "rightStop";
             _animation.Position = _position;
             
@@ -62,6 +88,15 @@ namespace PlatformerTest
                 _velocity.Y == 0 && _standing)
             {
                 _velocity.Y = -_jumping;
+                _jumpingStatus = true;
+                if (_direction == Direction.Left)
+                {
+                    Sprite.CurrentAnimation = "preJumpLeft";
+                }
+                else {
+                    Sprite.CurrentAnimation = "preJumpRight";
+                }
+                
             }
         }
 
@@ -141,15 +176,13 @@ namespace PlatformerTest
                 _direction == Direction.Left)
             {
                 _direction = Direction.Right;
-                Sprite.CurrentAnimation = "runRight";
             }
             else if (keyState.IsKeyDown(Keys.Left) &&
                 _direction == Direction.Right)
             {
                 _direction = Direction.Left;
-                Sprite.CurrentAnimation = "runLeft";
             }
-            if (!keyState.IsKeyDown(Keys.Right) && !keyState.IsKeyDown(Keys.Left))
+            if (!keyState.IsKeyDown(Keys.Right) && !keyState.IsKeyDown(Keys.Left) && !_jumpingStatus)
             {
                 if (_lastDirection == Direction.Left)
                 {
@@ -159,7 +192,6 @@ namespace PlatformerTest
                 {
                     Sprite.CurrentAnimation = "rightStop";
                 }
-                
             }
             _lastDirection = _direction;
         }
@@ -211,6 +243,25 @@ namespace PlatformerTest
                     {
                         _velocity.Y = Math.Min(_velocity.Y, ((bottom + 1) * TILE_SIZE) - _position.Y - _height);
                         _standing = _velocity.Y == 0;
+                        //play landing animation
+                        if (_direction == Direction.Right 
+                            && _standing 
+                            && Sprite.CurrentAnimation != "landingRight" 
+                           )
+                        {
+                            _jumpingStatus = false;
+                            Sprite.CurrentAnimation = "landingRight";
+                        }                        
+
+                        if (_direction == Direction.Left 
+                            && _standing 
+                            && Sprite.CurrentAnimation != "landingLeft" 
+                            )
+                        {
+                            _jumpingStatus = false;
+                            Sprite.CurrentAnimation = "landingLeft";
+                        }  
+
                         break;
                     }
                 }
@@ -234,6 +285,59 @@ namespace PlatformerTest
         {
             GetInput(dt, keyState);
             CheckCollisions(dt);
+
+            //checking direction to figureout which animation have to be played:
+            if (!_climbing && !_landing && !_jumpingStatus)
+            {
+                if (_velocity.X > 0 && _velocity.Y == 0
+                    && Sprite.CurrentAnimation != "runRight"
+                    && _direction == Direction.Right)
+                {
+                    //play run right animation
+                    Sprite.CurrentAnimation = "runRight";
+                }
+                else if (_velocity.X > 0 && _velocity.Y == 0
+                    && Sprite.CurrentAnimation != "runLeft"
+                    && _direction == Direction.Left)
+                {
+                    //play run left animation
+                    Sprite.CurrentAnimation = "runLeft";
+                }
+            }
+            else {
+                if (_jumpingStatus) {
+
+                    if (_direction == Direction.Right
+                        && Sprite.CurrentAnimation != "preJumpRight"
+                        && Sprite.CurrentAnimation != "preJumpLeft"
+                        && Sprite.CurrentAnimation != "jumpUpLoopRight"
+                        && _velocity.Y<-1f
+                        ) {
+                            //jump loop up right
+                            Sprite.CurrentAnimation = "jumpUpLoopRight";
+                    }
+
+                    if (_direction == Direction.Right
+                        && _velocity.Y > -1f
+                        && _velocity.Y < 1f
+                        && Sprite.CurrentAnimation != "jumpMaxPointRight"
+                        ) { 
+                        // jump Max point right
+                        Sprite.CurrentAnimation = "jumpMaxPointRight";
+                    }
+
+                    if(_direction == Direction.Right
+                        && _velocity.Y > 1f
+                        && Sprite.CurrentAnimation != "landingRight"
+                        && Sprite.CurrentAnimation != "jumpDownLoopRight"
+                        ){
+                        //jump loop down right
+                            Sprite.CurrentAnimation = "jumpMaxPointRight";
+                    }
+
+                }
+            }
+            
             _animation.Update(gameTime);
             base.Update(dt);
         }

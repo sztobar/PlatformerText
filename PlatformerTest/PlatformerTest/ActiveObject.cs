@@ -61,11 +61,6 @@ namespace PlatformerTest
             _animation = new SpriteAnimation(texture);
         }
 
-        
-
-        
-
-
         public virtual void Update(float dt)
         {
             _position.X += (int)_direction * _velocity.X;
@@ -76,8 +71,6 @@ namespace PlatformerTest
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             Rectangle drawRectangle = new Rectangle((int)_position.X, (int)_position.Y, _width, _height);
-            //spriteBatch.Draw(_texture, drawRectangle, Color.White);
-            //spriteBatch.Draw(_texture, drawRectangle, null, Color.White, _rotation, _hotSpot, SpriteEffects.None, 0f);
             _animation.Draw(spriteBatch, (int)_position.X, (int)_position.Y);
         }
     }
