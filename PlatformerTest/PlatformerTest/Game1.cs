@@ -20,16 +20,31 @@ namespace PlatformerTest
         SpriteBatch spriteBatch;
         Player player;
         public static Level level;
-
+        private float cameraPositionX;
+        private float cameraPositionY;
+        public int WindowWidth = 1024;
+        public int WindowHeight = 896;
+        public Rectangle viewportRect;
+        SoundManager bgMusic;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = 512;
-            graphics.PreferredBackBufferHeight = 448;
-
+            graphics.PreferredBackBufferWidth = WindowWidth;
+            graphics.PreferredBackBufferHeight = WindowHeight;
             level = new Level();
             Content.RootDirectory = "Content";
+
+            //byæ mo¿e do przeniesienia w inne miejsce
+            bgMusic = new SoundManager(Content, true);
+            bgMusic.addSound("music1");
+            bgMusic.addSound("music2");
+            bgMusic.loadAllSounds();
+            bgMusic.playSound("music2");
+            //bgMusic = Content.Load<SoundEffect>("music2").CreateInstance();
+            //bgMusic.Play();
+            //bgMusic.Volume = 0.5f;
+
         }
 
         /// <summary>
@@ -41,7 +56,6 @@ namespace PlatformerTest
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -53,7 +67,7 @@ namespace PlatformerTest
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player = new Player(this.Content.Load<Texture2D>("player"));
+            player = new Player(this.Content.Load<Texture2D>("playerSprite"));
             player._collisionTexture = this.Content.Load<Texture2D>("collision");
             level.SetTileset(this.Content.Load<Texture2D>("background"));
         }
@@ -80,8 +94,8 @@ namespace PlatformerTest
 
             KeyboardState keyState = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds * 10f;
-            level.Update(gameTime, keyState);
-            player.Update(dt, keyState);
+            level.Update(gameTime, keyState, spriteBatch);
+            player.Update(dt, keyState, gameTime);
             base.Update(gameTime);
         }
 
@@ -94,12 +108,33 @@ namespace PlatformerTest
             GraphicsDevice.Clear(Color.CornflowerBlue);
             GraphicsDevice.SetRenderTarget(null);
 
-            spriteBatch.Begin();
+            if (player.Sprite.Position.X - player._playerOffset < 0)
+            {
+                cameraPositionX = 0;
+            }
+            else {
+                if (player.Sprite.Position.X + player._playerOffset < ((level.mapWidth*64) - 100 )) {
+                    cameraPositionX = player.Sprite.Position.X - player._playerOffset;
+                }                
+            }
+
+            if (player.Sprite.Position.Y - player._playerHeightOffset < 0) { 
+                //top border!
+                cameraPositionY = 0;
+            }else{
+                if(player.Sprite.Position.Y + player._playerHeightOffset  < ((level.mapHeight*64) +130 )){
+                    cameraPositionY = player.Sprite.Position.Y - player._playerHeightOffset;
+                }
+            }
+
+            Matrix cameraTransform = Matrix.CreateTranslation(-cameraPositionX, -cameraPositionY, 0.0f);
+            spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.AlphaBlend,SamplerState.LinearClamp,DepthStencilState.None,RasterizerState.CullCounterClockwise,null, cameraTransform);
             level.Draw(spriteBatch);
             player.Draw(spriteBatch);
             level.DrawGrid(spriteBatch);
             level.DrawIntersectingGrid(spriteBatch, player);
             spriteBatch.End();
+            
 
             base.Draw(gameTime);
         }
