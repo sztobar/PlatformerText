@@ -22,11 +22,11 @@ namespace PlatformerTest
         bool _landing = false;
         float _climbingVelocity = 0f;
         Direction _lastDirection;
-        int _playerFrameHeight = 130;
-        int _playerFrameWidth = 100;
-        float _playerFrameLength = 0.1f;
-        public float _playerOffset = 462;
-        public float _playerHeightOffset = 513;
+        int _playerFrameHeight = 65;//130;
+        int _playerFrameWidth = 50;//100;
+        float _playerFrameLength = 0.1f;//0.1f;
+        public float _playerOffset = 231;//462;
+        public float _playerHeightOffset = 256.5f;//513;
 
         #endregion
         #region helper
@@ -38,39 +38,34 @@ namespace PlatformerTest
         public Player(Texture2D texture)
             : base(texture, new Vector2(60, 60), 32, 64)
         {
-            //_hotSpot = new Vector2(_width / 2, _height);
-            //animations
-
             #region animations
 
-                //run animations
-                Sprite.AddAnimation("runLeft", 800, 130, _playerFrameWidth, _playerFrameHeight, 8, _playerFrameLength);
-                Sprite.AddAnimation("runRight", 0, 130, _playerFrameWidth, _playerFrameHeight, 8, _playerFrameLength);
-                //idle animations 
-                Sprite.AddAnimation("rightStop", 0, 260, _playerFrameWidth, _playerFrameHeight, 1, 1f, "rightStop2");
-                Sprite.AddAnimation("rightStop2", 100, 260, _playerFrameWidth, _playerFrameHeight, 1, 1f, "rightStop");
-                Sprite.AddAnimation("leftStop", 300, 260, _playerFrameWidth, _playerFrameHeight, 1, 1f, "leftStop2");
-                Sprite.AddAnimation("leftStop2", 400, 260, _playerFrameWidth, _playerFrameHeight, 1, 1f, "leftStop");
-                //jump right animations
-                Sprite.AddAnimation("preJumpRight", 0, 0, _playerFrameWidth, _playerFrameHeight, 3, _playerFrameLength, "jumpUpLoopRight");
-                Sprite.AddAnimation("jumpUpLoopRight", 300, 0, _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
-                Sprite.AddAnimation("jumpMaxPointRight", 400, 0, _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
-                Sprite.AddAnimation("jumpDownLoopRight", 500, 0, _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
-                Sprite.AddAnimation("landingRight", 600, 0, _playerFrameWidth, _playerFrameHeight, 4, _playerFrameLength, "rightStop");
-                //jump left animations
-                Sprite.AddAnimation("preJumpLeft", 1000, 0, _playerFrameWidth, _playerFrameHeight, 3,  _playerFrameLength, "jumpUpLoopLeft");
-                Sprite.AddAnimation("jumpUpLoopLeft", 1300, 0,  _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
-                Sprite.AddAnimation("jumpMaxPointLeft", 1400, 0,  _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
-                Sprite.AddAnimation("jumpDownLoopLeft", 1500, 0, _playerFrameWidth, _playerFrameHeight, 1,_playerFrameLength);
-                Sprite.AddAnimation("landingLeft",1600,0, _playerFrameWidth, _playerFrameHeight,4,_playerFrameLength);
-                //end of animations
+            // run animations
+            Sprite.AddAnimation("runLeft", 400, 65, _playerFrameWidth, _playerFrameHeight, 8, _playerFrameLength);
+            Sprite.AddAnimation("runRight", 0, 65, _playerFrameWidth, _playerFrameHeight, 8, _playerFrameLength);
+            // idle animations 
+            Sprite.AddAnimation("rightStop", 0, 130, _playerFrameWidth, _playerFrameHeight, 1, 1f, "rightStop2");
+            Sprite.AddAnimation("rightStop2", 50, 130, _playerFrameWidth, _playerFrameHeight, 1, 1f, "rightStop");
+            Sprite.AddAnimation("leftStop", 150, 130, _playerFrameWidth, _playerFrameHeight, 1, 1f, "leftStop2");
+            Sprite.AddAnimation("leftStop2", 200, 130, _playerFrameWidth, _playerFrameHeight, 1, 1f, "leftStop");
+            // jump right animations
+            Sprite.AddAnimation("preJumpRight", 0, 0, _playerFrameWidth, _playerFrameHeight, 3, _playerFrameLength, "jumpUpLoopRight");
+            Sprite.AddAnimation("jumpUpLoopRight", 150, 0, _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
+            Sprite.AddAnimation("jumpMaxPointRight", 200, 0, _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
+            Sprite.AddAnimation("jumpDownLoopRight", 250, 0, _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
+            Sprite.AddAnimation("landingRight", 300, 0, _playerFrameWidth, _playerFrameHeight, 4, _playerFrameLength, "rightStop");
+            // jump left animations
+            Sprite.AddAnimation("preJumpLeft", 500, 0, _playerFrameWidth, _playerFrameHeight, 3,  _playerFrameLength, "jumpUpLoopLeft");
+            Sprite.AddAnimation("jumpUpLoopLeft", 650, 0,  _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
+            Sprite.AddAnimation("jumpMaxPointLeft", 700, 0,  _playerFrameWidth, _playerFrameHeight, 1, _playerFrameLength);
+            Sprite.AddAnimation("jumpDownLoopLeft", 750, 0, _playerFrameWidth, _playerFrameHeight, 1,_playerFrameLength);
+            Sprite.AddAnimation("landingLeft", 800,0, _playerFrameWidth, _playerFrameHeight,4,_playerFrameLength);
+            // end of animations
 
             #endregion
 
             _animation.CurrentAnimation = "rightStop";
             _animation.Position = _position;
-            
-
         }
 
         public void GetInput(float dt, KeyboardState keyState)

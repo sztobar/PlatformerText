@@ -22,8 +22,8 @@ namespace PlatformerTest
         public static Level level;
         private float cameraPositionX;
         private float cameraPositionY;
-        public int WindowWidth = 1024;
-        public int WindowHeight = 896;
+        public int WindowWidth = 640;
+        public int WindowHeight = 480;
         public Rectangle viewportRect;
         SoundManager bgMusic;
         public Game1()
@@ -38,9 +38,9 @@ namespace PlatformerTest
             //byæ mo¿e do przeniesienia w inne miejsce
             bgMusic = new SoundManager(Content, true);
             bgMusic.addSound("music1");
-            bgMusic.addSound("music2");
+            bgMusic.addSound("music2"); 
             bgMusic.loadAllSounds();
-            bgMusic.playSound("music2");
+            //bgMusic.playSound("music2");
             //bgMusic = Content.Load<SoundEffect>("music2").CreateInstance();
             //bgMusic.Play();
             //bgMusic.Volume = 0.5f;
@@ -67,9 +67,9 @@ namespace PlatformerTest
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player = new Player(this.Content.Load<Texture2D>("playerSprite"));
+            player = new Player(this.Content.Load<Texture2D>("player/sprite"));
             player._collisionTexture = this.Content.Load<Texture2D>("collision");
-            level.SetTileset(this.Content.Load<Texture2D>("background"));
+            level.SetTileset(this.Content.Load<Texture2D>("tileset/test"));
         }
 
         /// <summary>
