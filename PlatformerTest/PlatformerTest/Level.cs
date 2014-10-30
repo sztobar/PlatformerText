@@ -10,6 +10,8 @@ namespace PlatformerTest
 {
     public class Level
     {
+        int[,] _map;
+        private Tileset _tileset;   
         int[,] _sourceTiles = new int[14, 16] { 
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -18,15 +20,15 @@ namespace PlatformerTest
             { 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3 },
-            { 0, 0, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3 },
-            { 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 0, 0, 0, 6, 0, 3 },
-            { 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 6, 1, 0, 3 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 1, 0, 0, 3 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 1, 0, 0, 0, 3 },
-            { 1, 1, 1, 1, 1, 1, 0, 0, 0, 6, 1, 1, 1, 1, 1, 1 }
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6 },
+            { 0, 0, 2, 6, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6 },
+            { 0, 0, 0, 6, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 6 },
+            { 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0,12, 1, 0, 6 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,12, 1, 0, 0, 6 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,12, 1, 0, 0, 0, 6 },
+            { 1, 1, 1, 1, 1, 1, 0, 0, 0,12, 1, 1, 1, 1, 1, 1 }
         };
-        int[,] _tiles;
+        private int[,] _tiles;
         public int[,] Tiles
         {
             get
@@ -35,7 +37,7 @@ namespace PlatformerTest
             }
         }
         public static int TILE_SIZE = 32;
-        Texture2D _tileset;
+        //Texture2D _tileset;
         int _tilesetHeight;
         int _tilesetWidth;
 
@@ -53,11 +55,15 @@ namespace PlatformerTest
             }
         }
 
+        public Level(Tileset tileset, int[,] map)
+        {
+            _tileset = tileset;
+            _map = map;
+        }
+
         public void Update(GameTime gameTime, KeyboardState keyState)
         {
             //_player.IsStandingOn(_obstacles);
-            
-            
 
         }
 
@@ -140,6 +146,11 @@ namespace PlatformerTest
                         Color.White);
                 }
             }
+        }
+
+        void LoadContent(Func<string, Texture2D> loadContent)
+        {
+            loadContent("tilesets" + _tileset.TextureSource);
         }
     }
 }

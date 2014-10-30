@@ -25,10 +25,15 @@ namespace PlatformerTest
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = 512;
-            graphics.PreferredBackBufferHeight = 448;
+            //graphics.PreferredBackBufferWidth = 1024;
+            //graphics.PreferredBackBufferHeight = 896;
+            graphics.PreferredBackBufferWidth = 320;//512;
+            graphics.PreferredBackBufferHeight = 240;//448;
+            //320x240
+            //    640x480
 
-            level = new Level();
+
+            level = new Level(new Tileset("test-background", testTilesetConfig), testMap);
             Content.RootDirectory = "Content";
         }
 
@@ -55,7 +60,8 @@ namespace PlatformerTest
             spriteBatch = new SpriteBatch(GraphicsDevice);
             player = new Player(this.Content.Load<Texture2D>("playerSprite"));
             player._collisionTexture = this.Content.Load<Texture2D>("collision");
-            level.SetTileset(this.Content.Load<Texture2D>("background"));
+            level.LoadContent(this.Content.Load<Texture2D>);
+            //level.SetTileset(this.Content.Load<Texture2D>("background"));
         }
 
         /// <summary>
@@ -100,6 +106,7 @@ namespace PlatformerTest
             level.DrawGrid(spriteBatch);
             level.DrawIntersectingGrid(spriteBatch, player);
             spriteBatch.End();
+            
 
             base.Draw(gameTime);
         }
