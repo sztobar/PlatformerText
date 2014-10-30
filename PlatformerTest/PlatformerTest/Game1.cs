@@ -67,6 +67,7 @@ namespace PlatformerTest
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            //player = new Player(this.Content.Load<Texture2D>("player/sprite"));
             player = new Player(this.Content.Load<Texture2D>("player/sprite"));
             player._collisionTexture = this.Content.Load<Texture2D>("collision");
             level.SetTileset(this.Content.Load<Texture2D>("tileset/test"));

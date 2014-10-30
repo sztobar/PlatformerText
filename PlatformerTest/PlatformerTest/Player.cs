@@ -36,6 +36,7 @@ namespace PlatformerTest
         #endregion
 
         public Player(Texture2D texture)
+            //: base(texture, new Rectangle(60,60,32,64))
             : base(texture, new Vector2(60, 60), 32, 64)
         {
             #region animations

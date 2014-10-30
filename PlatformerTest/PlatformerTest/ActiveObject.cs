@@ -72,6 +72,9 @@ namespace PlatformerTest
         {
             Rectangle drawRectangle = new Rectangle((int)_position.X, (int)_position.Y, _width, _height);
             _animation.Draw(spriteBatch, (int)_position.X, (int)_position.Y);
+            //spriteBatch.Draw(_texture, new Rectangle(_position.X,_position.Y,_width,_height), null, Color.White, 0f, _position,null,0);
+
+            //spriteBatch.Draw(_texture, new Rectangle((int)_position.X, (int)_position.Y, _width, _height), Color.White);
         }
     }
 }

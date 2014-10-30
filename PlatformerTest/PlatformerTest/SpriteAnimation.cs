@@ -289,10 +289,16 @@ namespace PlatformerTest
 
         public void Draw(SpriteBatch spriteBatch, int XOffset, int YOffset)
         {
+            //float scale = 0.5f;
+            //Vector2 scaledV2Position = new Vector2();
+            //scaledV2Position.X = v2Position.X + ((int)(v2Position.X * scale));
+           // scaledV2Position.Y = v2Position.Y + ((int)(v2Position.Y * scale));
+            v2Center.Y = 0;
+            v2Center.X = 0;
             if (bAnimating)
                 spriteBatch.Draw(t2dTexture, v2Position,
                                 CurrentFrameAnimation.FrameRectangle, colorTint,
-                                fRotation, v2Center, 1f, SpriteEffects.None, 0);
+                                fRotation, v2Center, 1f, SpriteEffects.None,0);
         }
     }
 }
