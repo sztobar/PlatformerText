@@ -45,7 +45,8 @@ namespace PlatformerTest
                 return _tiles;
             }
         }
-        public static int TILE_SIZE = 64;
+        public static int TILE_SIZE = 32;
+        public static int GAME_TILE_SIZE = 32;
         Texture2D _tileset;
         int _tilesetHeight;
         int _tilesetWidth;

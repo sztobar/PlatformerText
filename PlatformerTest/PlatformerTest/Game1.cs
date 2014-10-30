@@ -35,15 +35,18 @@ namespace PlatformerTest
             level = new Level();
             Content.RootDirectory = "Content";
 
-            //byæ mo¿e do przeniesienia w inne miejsce
+            /// Creating sound manager instance:
+            /// NOTE: It should be only one, becouse WP 7 can handle only 16 sounds at once
+            
             bgMusic = new SoundManager(Content, true);
+
+            // Adding sounds to be loaded
             bgMusic.addSound("music1");
             bgMusic.addSound("music2");
+            // Loading sounds added before
             bgMusic.loadAllSounds();
+            // playing desired sound
             bgMusic.playSound("music2");
-            //bgMusic = Content.Load<SoundEffect>("music2").CreateInstance();
-            //bgMusic.Play();
-            //bgMusic.Volume = 0.5f;
 
         }
 
