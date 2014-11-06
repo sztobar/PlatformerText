@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 
 namespace PlatformerTest
 {
@@ -10,7 +11,8 @@ namespace PlatformerTest
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            //using (Game game = new Game1())
+            using (Game game = new CameraGame.CameraTestGame())
             {
                 game.Run();
             }

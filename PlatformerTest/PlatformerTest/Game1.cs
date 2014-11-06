@@ -134,7 +134,6 @@ namespace PlatformerTest
             level.DrawGrid(spriteBatch);
             level.DrawIntersectingGrid(spriteBatch, player);
             spriteBatch.End();
-            
 
             base.Draw(gameTime);
         }
