@@ -76,7 +76,7 @@ namespace PlatformerTest.Base
 
         public void AccelerateX()
         {
-            float delta = acceleration.X * maxVelocity.X;
+            var delta = acceleration.X * maxVelocity.X;
             if (velocity.X + delta > maxVelocity.X)
                 velocity.X = maxVelocity.X;
             else
@@ -85,7 +85,7 @@ namespace PlatformerTest.Base
 
         public void AccelerateY()
         {
-            float delta = acceleration.Y * maxVelocity.Y;
+            var delta = acceleration.Y * maxVelocity.Y;
             if (velocity.Y + delta > maxVelocity.Y)
                 velocity.Y = maxVelocity.Y;
             else
@@ -94,7 +94,7 @@ namespace PlatformerTest.Base
 
         public void DecelerateX()
         {
-            float delta = deceleration.X * maxVelocity.X;
+            var delta = deceleration.X * maxVelocity.X;
             if (velocity.X - delta < minVelocity.X)
                 velocity.X = minVelocity.X;
             else
@@ -103,7 +103,7 @@ namespace PlatformerTest.Base
 
         public void DecelerateY()
         {
-            float delta = deceleration.Y * maxVelocity.Y;
+            var delta = deceleration.Y * maxVelocity.Y;
             if (velocity.Y - delta < minVelocity.Y)
                 velocity.Y = minVelocity.Y;
             else

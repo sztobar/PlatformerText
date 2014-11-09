@@ -12,6 +12,7 @@ namespace PlatformerTest.CameraGame
 
         public override void Initialize()
         {
+            Position = new Vector2(330, 250);
             acceleration = new Vector2(0.2f, 0.2f);
             deceleration = new Vector2(0.1f, 0.1f);
             maxVelocity = new Vector2(10, 10);

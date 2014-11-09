@@ -6,13 +6,13 @@ namespace PlatformerTest.Base
     {
         public static UserInputState GetState()
         {
-            UserInputState userInput = new UserInputState();
+            var userInput = new UserInputState();
             return ReadKeyboardState(userInput);
         }
 
         public static UserInputState ReadKeyboardState(UserInputState userInput)
         {
-            KeyboardState state = Keyboard.GetState();
+            var state = Keyboard.GetState();
 
             if (state.IsKeyDown(Keys.Left) && state.IsKeyUp(Keys.Right))
                 userInput.turnLeft = true;

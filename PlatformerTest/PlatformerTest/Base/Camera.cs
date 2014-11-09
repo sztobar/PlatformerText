@@ -1,17 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PlatformerTest.Base
 {
-    abstract class Camera
+    public abstract class Camera
     {
         protected Vector2 position;
+
+        public Vector2 Position { get { return position; } }
 
         abstract public void SetPosition(Sprite sprite);
 
         abstract public Matrix GetTranslationMatrix();
+
+        public virtual Rectangle GetRectangle() { return Rectangle.Empty; }
     }
 }

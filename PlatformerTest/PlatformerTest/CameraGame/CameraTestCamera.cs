@@ -7,11 +7,18 @@ using System.Text;
 
 namespace PlatformerTest.CameraGame
 {
-    class CameraTestCamera : Base.Camera
+    public class CameraTestCamera : Base.Camera
     {
         public override void SetPosition(Sprite sprite)
         {
             position = sprite.Position - new Vector2(ProgramConfig.windowWidth / 2, ProgramConfig.windowHeight / 2);
+            position.X = position.X >= 0 ? position.X : 0;
+            position.Y = position.Y >= 0 ? position.Y : 0;
+        }
+
+        public override Rectangle GetRectangle()
+        {
+            return new Rectangle((int)position.X, (int)position.Y, ProgramConfig.windowWidth, ProgramConfig.windowHeight);
         }
 
         public override Matrix GetTranslationMatrix()

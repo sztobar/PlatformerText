@@ -14,10 +14,12 @@ namespace PlatformerTest.Base
         protected Component[] components;
         public Game()
         {
-            graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = ProgramConfig.isFullScreen;
-            graphics.PreferredBackBufferWidth = ProgramConfig.windowWidth;
-            graphics.PreferredBackBufferHeight = ProgramConfig.windowHeight;
+            graphics = new GraphicsDeviceManager(this)
+            {
+                IsFullScreen = ProgramConfig.isFullScreen,
+                PreferredBackBufferWidth = ProgramConfig.windowWidth,
+                PreferredBackBufferHeight = ProgramConfig.windowHeight
+            };
             Content.RootDirectory = "Content";
         }
 

@@ -14,8 +14,8 @@ namespace PlatformerTest.CameraGame
             : base()
         {
             player = new CameraTestPlayer();
-            level = new CameraTestLevel();
             camera = new CameraTestCamera();
+            level = new CameraTestLevel(camera);
         }
 
         protected override void Initialize()
@@ -35,8 +35,8 @@ namespace PlatformerTest.CameraGame
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            UserInputState inputState = UserInput.GetState();
+            var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var inputState = UserInput.GetState();
 
             player.Update(dt, inputState);
             level.Update(dt, inputState);
@@ -47,7 +47,7 @@ namespace PlatformerTest.CameraGame
             base.Draw(gameTime);
             camera.SetPosition(player);
 
-            Matrix cameraTransform = camera.GetTranslationMatrix();
+            var cameraTransform = camera.GetTranslationMatrix();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, cameraTransform);
 
             level.Draw(spriteBatch);

@@ -52,15 +52,15 @@ namespace PlatformerTest.Base
         public override void Draw(SpriteBatch spritebatch)
         {
             spritebatch.Draw(backgroundTexture, new Rectangle(0, 0, width, height), backgroundColor);
-            if (showGrid)
-                for (int x = 0; x < Width; ++x)
-                    for (int y = 0; y < Height; ++y)
-                        spritebatch.Draw(gridTexture,
-                            new Rectangle(x * ProgramConfig.tileSize,
-                                y * ProgramConfig.tileSize,
-                                ProgramConfig.tileSize,
-                                ProgramConfig.tileSize),
-                            Color.White);
+            if (!showGrid) return;
+            for (var x = 0; x < Width; ++x)
+                for (var y = 0; y < Height; ++y)
+                    spritebatch.Draw(gridTexture,
+                        new Rectangle(x * ProgramConfig.tileSize,
+                            y * ProgramConfig.tileSize,
+                            ProgramConfig.tileSize,
+                            ProgramConfig.tileSize),
+                        Color.White);
         }
 
         #endregion

@@ -11,8 +11,11 @@ namespace PlatformerTest.CameraGame
 
         override public void GetInput(UserInputState input)
         {
-            float Right = 1, Down = 1, Left = -1, Up = -1;
-            Vector2 direction = sprite.Direction;
+            const float right = 1;
+            const float down = 1;
+            const float left = -1;
+            const float Up = -1;
+            var direction = sprite.Direction;
 
             if (!input.turnLeft && !input.turnRight)
             {
@@ -21,10 +24,10 @@ namespace PlatformerTest.CameraGame
             else
             {
                 sprite.AccelerateX();
-                if (input.turnLeft && direction.X == Right)
-                    sprite.Direction = new Vector2(Left, direction.Y);
-                else if (input.turnRight && direction.X == Left)
-                    sprite.Direction = new Vector2(Right, direction.Y);
+                if (input.turnLeft && direction.X == right)
+                    sprite.Direction = new Vector2(left, direction.Y);
+                else if (input.turnRight && direction.X == left)
+                    sprite.Direction = new Vector2(right, direction.Y);
             }
 
             if (!input.turnUp && !input.turnDown)
@@ -34,10 +37,10 @@ namespace PlatformerTest.CameraGame
             else
             {
                 sprite.AccelerateY();
-                if (input.turnUp && direction.Y == Down)
+                if (input.turnUp && direction.Y == down)
                     sprite.Direction = new Vector2(direction.X, Up);
                 else if (input.turnDown && direction.Y == Up)
-                    sprite.Direction = new Vector2(direction.X, Down);
+                    sprite.Direction = new Vector2(direction.X, down);
             }
         }
     }
