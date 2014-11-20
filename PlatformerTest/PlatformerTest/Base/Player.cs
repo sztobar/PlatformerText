@@ -6,7 +6,7 @@ namespace PlatformerTest.Base
     {
         protected Movement movement;
         
-        public Player(string textureSource, Vector2 hitbox)
+        protected Player(string textureSource, Point hitbox)
             : base("player/" + textureSource, hitbox)
         {
         }
@@ -15,9 +15,12 @@ namespace PlatformerTest.Base
 
         public override void Update(float dt, UserInputState inputState)
         {
-            base.Update(dt, inputState);
             movement.GetInput(inputState);
+            GetCollisions();
+            base.Update(dt, inputState);
         }
+
+        protected virtual void GetCollisions() { }
 
         #endregion
     }

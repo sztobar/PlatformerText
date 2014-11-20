@@ -13,9 +13,9 @@ namespace PlatformerTest.CameraGame
         public CameraTestGame()
             : base()
         {
-            player = new CameraTestPlayer();
             camera = new CameraTestCamera();
             level = new CameraTestLevel(camera);
+            player = new CameraTestPlayer(level);
         }
 
         protected override void Initialize()

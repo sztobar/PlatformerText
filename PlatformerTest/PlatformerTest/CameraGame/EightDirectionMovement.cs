@@ -14,7 +14,7 @@ namespace PlatformerTest.CameraGame
             const float right = 1;
             const float down = 1;
             const float left = -1;
-            const float Up = -1;
+            const float up = -1;
             var direction = sprite.Direction;
 
             if (!input.turnLeft && !input.turnRight)
@@ -38,8 +38,8 @@ namespace PlatformerTest.CameraGame
             {
                 sprite.AccelerateY();
                 if (input.turnUp && direction.Y == down)
-                    sprite.Direction = new Vector2(direction.X, Up);
-                else if (input.turnDown && direction.Y == Up)
+                    sprite.Direction = new Vector2(direction.X, up);
+                else if (input.turnDown && direction.Y == up)
                     sprite.Direction = new Vector2(direction.X, down);
             }
         }

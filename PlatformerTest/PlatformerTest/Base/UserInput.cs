@@ -10,7 +10,7 @@ namespace PlatformerTest.Base
             return ReadKeyboardState(userInput);
         }
 
-        public static UserInputState ReadKeyboardState(UserInputState userInput)
+        private static UserInputState ReadKeyboardState(UserInputState userInput)
         {
             var state = Keyboard.GetState();
 

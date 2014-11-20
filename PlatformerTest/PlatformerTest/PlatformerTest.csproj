@@ -28,7 +28,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -106,11 +106,13 @@
     <Compile Include="Base\Component.cs" />
     <Compile Include="Base\Game.cs" />
     <Compile Include="Base\Level.cs" />
+    <Compile Include="Base\MapExtension.cs" />
     <Compile Include="Base\MovableSprite.cs" />
     <Compile Include="Base\Movement.cs" />
     <Compile Include="Base\Player.cs" />
     <Compile Include="Base\UserInput.cs" />
     <Compile Include="Base\UserInputState.cs" />
+    <Compile Include="Base\Utils.cs" />
     <Compile Include="CameraGame\CameraTestCamera.cs" />
     <Compile Include="CameraGame\CameraTestGame.cs" />
     <Compile Include="CameraGame\CameraTestLevel.cs" />

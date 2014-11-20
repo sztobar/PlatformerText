@@ -13,7 +13,7 @@ namespace PlatformerTest.Base
         /// Because hitbox rectangle starts from position, its represented
         /// only in vector(where X is width and Y is height)
         /// </summary>
-        protected Vector2 hitbox;
+        protected Point hitbox;
         protected Vector2 position;
         /// <summary>
         /// Path to texture content
@@ -30,11 +30,15 @@ namespace PlatformerTest.Base
             set { position = value; }
         }
 
+        public int Width { get { return hitbox.X; }}
+
+        public int Height { get { return hitbox.Y; } }
+
         #endregion
 
         #region constructors
 
-        protected Sprite (string textureSource, Vector2 hitbox)
+        protected Sprite (string textureSource, Point hitbox)
         {
             this.textureSource = textureSource;
             this.hitbox = hitbox;
@@ -52,7 +56,7 @@ namespace PlatformerTest.Base
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture,
-                new Rectangle((int)position.X, (int)position.Y, (int)hitbox.X, (int)hitbox.Y),
+                new Rectangle((int)position.X, (int)position.Y, hitbox.X, hitbox.Y),
                 Color.White);
         }
 

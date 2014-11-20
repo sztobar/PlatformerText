@@ -50,7 +50,7 @@ namespace PlatformerTest.Base
 
         #region constructors
 
-        public MovableSprite(String textureSource, Vector2 hitbox)
+        public MovableSprite(String textureSource, Point hitbox)
             : base(textureSource, hitbox)
         { }
 

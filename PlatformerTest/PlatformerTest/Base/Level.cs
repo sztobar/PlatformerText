@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PlatformerTest.Base
 {
-    public class Level : Component
+    public abstract class Level : Component
     {
         #region variables
 
@@ -62,6 +62,8 @@ namespace PlatformerTest.Base
                             ProgramConfig.tileSize),
                         Color.White);
         }
+
+        public abstract int[][] GetCollisionTiles();
 
         #endregion
     }
