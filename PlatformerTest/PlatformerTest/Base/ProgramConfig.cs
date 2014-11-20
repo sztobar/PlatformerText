@@ -12,5 +12,8 @@ namespace PlatformerTest.Base
         public static bool isFullScreen = false;
 
         public static int tileSize = 32;
+
+        // temporary workaround for working with old Player Class
+        public static int[,] LevelTiles = new int[0, 0];
     }
 }

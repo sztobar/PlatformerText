@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
+using PlatformerTest.Base;
 
 namespace PlatformerTest
 {
@@ -12,10 +13,10 @@ namespace PlatformerTest
 
         float _acceleration = 10f;
         float _deceleration = 10f;
-        float _gravity = 6f;
-        float _jumping = 15f;
+        float _gravity = 15f;
+        float _jumping = 6f;
         float _maxXVelocity = 5f;
-        float _maxYVelocity = 6f;
+        float _maxYVelocity = 30f;
         bool _standing = true;
         bool _climbing = false;
         bool _jumpingStatus = false;
@@ -201,15 +202,17 @@ namespace PlatformerTest
             int top = (int)_position.Y / TILE_SIZE;
             int right = ((int)_position.X + _width - 1) / TILE_SIZE;
             int bottom = ((int)_position.Y + _height - 1) / TILE_SIZE;
-            int [,] tiles = Game1.level.Tiles;
+            //int [,] tiles = Game1.level.Tiles;
+            int[,] tiles = ProgramConfig.LevelTiles;
             int levelRightBoundary = tiles.GetLength(0);
             int levelBottomBoundary = tiles.GetLength(1);
+            const int collisionTile = 4;
 
             if (_direction == Direction.Right)
             {
                 for (int y = top; y <= bottom; ++y)
                 {
-                    if (right + 1 == levelRightBoundary || tiles[right + 1, y] == 1)
+                    if (right + 1 == levelRightBoundary || tiles[right + 1, y] == collisionTile)
                     {
                         _velocity.X = Math.Min(_velocity.X, ((right + 1) * TILE_SIZE) - (_position.X + _width));
                         break;
@@ -220,7 +223,7 @@ namespace PlatformerTest
             {
                 for (int y = top; y <= bottom; ++y)
                 {
-                    if (left == 0 || tiles[left - 1, y] == 1)
+                    if (left == 0 || tiles[left - 1, y] == collisionTile)
                     {
                         _velocity.X = Math.Min(_velocity.X, _position.X - (left * TILE_SIZE));
                         break;
@@ -237,7 +240,7 @@ namespace PlatformerTest
             {
                 for (int x = left; x <= right; ++x)
                 {
-                    if (bottom + 1 == levelBottomBoundary || tiles[x, bottom + 1] == 1 || tiles[x, bottom + 1] == 2)
+                    if (bottom + 1 == levelBottomBoundary || tiles[x, bottom + 1] == collisionTile || tiles[x, bottom + 1] == 2)
                     {
                         _velocity.Y = Math.Min(_velocity.Y, ((bottom + 1) * TILE_SIZE) - _position.Y - _height);
                         _standing = _velocity.Y == 0;
@@ -275,7 +278,7 @@ namespace PlatformerTest
                 _standing = false;
                 for (int x = left; x <= right; ++x)
                 {
-                    if (top == 0 || tiles[x, top - 1] == 1)
+                    if (top == 0 || tiles[x, top - 1] == collisionTile)
                     {
                         _velocity.Y = Math.Max(_velocity.Y, (top * TILE_SIZE) - _position.Y);
                         break;

@@ -21,6 +21,7 @@ namespace PlatformerTest.CameraGame
         {
             base.LoadContent(content);
             map = content.Load<Map>("tmx/xaton12test2");
+            ProgramConfig.LevelTiles = GetLevelTiles();
         }
 
         public override void Initialize()
@@ -39,6 +40,23 @@ namespace PlatformerTest.CameraGame
             map.DrawScrollingLayer(spritebatch, 2, camera, Vector2.One);
             map.DrawScrollingLayer(spritebatch, 3, camera, Vector2.One);
             map.DrawScrollingLayer(spritebatch, 4, camera, Vector2.One);
+        }
+
+        public int[,] GetLevelTiles()
+        {
+            var collisionTiles = map.TileLayers["collision"].Tiles;
+            var lengthI = collisionTiles.Length;
+            var result = new int[lengthI, collisionTiles[0].Length];
+            for (var i = 0; i < lengthI; ++i)
+            {
+                var tilesRow = collisionTiles[i];
+                var lengthJ = tilesRow.Length;
+                for (var j = 0; j < lengthJ; ++j)
+                {
+                    result[i, j] = tilesRow[j] == null ? 0 : map.SourceTiles[tilesRow[j].SourceID].TilesetID;
+                }
+            }
+            return result;
         }
 
         public override int[][] GetCollisionTiles()
