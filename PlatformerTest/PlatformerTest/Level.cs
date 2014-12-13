@@ -10,8 +10,6 @@ namespace PlatformerTest
 {
     public class Level
     {
-
-
         int[,] _sourceTiles = new int[20, 32] { 
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -46,7 +44,6 @@ namespace PlatformerTest
             }
         }
         public static int TILE_SIZE = 32;
-        public static int GAME_TILE_SIZE = 32;
         Texture2D _tileset;
         int _tilesetHeight;
         int _tilesetWidth;

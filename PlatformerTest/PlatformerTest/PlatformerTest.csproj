@@ -10,16 +10,15 @@
     <RootNamespace>PlatformerTest</RootNamespace>
     <AssemblyName>PlatformerTest</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>Reach</XnaProfile>
+    <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>ec09be63-b174-4f40-9ac5-85e2f2a5e677</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\MellRebook\Desktop\Naq\</PublishUrl>
+    <PublishUrl>C:\Users\zloto_000\Desktop\Naq Release\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -29,7 +28,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>2</ApplicationRevision>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -70,11 +70,25 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>PlatformerTest.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FuncWorks.XNA.XTiled">
-      <HintPath>..\..\..\..\..\Desktop\XTiled-0.8.1.1\x86\FuncWorks.XNA.XTiled.dll</HintPath>
+    <Reference Include="FuncWorks.XNA.XTiled, Version=0.8.1.1, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\FuncWorks.XNA.XTiled.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
@@ -82,6 +96,7 @@
     <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -89,19 +104,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveObject.cs" />
+    <Compile Include="Base\Camera.cs" />
+    <Compile Include="Base\Component.cs" />
+    <Compile Include="Base\Game.cs" />
+    <Compile Include="Base\Level.cs" />
+    <Compile Include="Base\MapExtension.cs" />
+    <Compile Include="Base\MovableSprite.cs" />
+    <Compile Include="Base\Movement.cs" />
+    <Compile Include="Base\Player.cs" />
+    <Compile Include="Base\UserInput.cs" />
+    <Compile Include="Base\UserInputState.cs" />
+    <Compile Include="Base\Utils.cs" />
+    <Compile Include="CameraGame\CameraTestCamera.cs" />
+    <Compile Include="CameraGame\CameraTestGame.cs" />
+    <Compile Include="CameraGame\CameraTestLevel.cs" />
+    <Compile Include="CameraGame\CameraTestPlayer.cs" />
+    <Compile Include="CameraGame\EightDirectionMovement.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="FrameAnimation.cs" />
-    <Compile Include="Game2.cs" />
     <Compile Include="Level.cs" />
-    <Compile Include="Movement.cs" />
-    <Compile Include="PlatformMovement.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Base\ProgramConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="SoundManager.cs" />
-    <Compile Include="Sprite.cs" />
+    <Compile Include="Base\Sprite.cs" />
     <Compile Include="SpriteAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +138,11 @@
     <Content Include="GameThumbnail.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>
+    <Content Include="lib\FuncWorks.XNA.XTiled.dll" />
+    <Content Include="lib\FuncWorks.XNA.XTiled.pdb" />
+    <Content Include="lib\FuncWorks.XNA.XTiledExtensions.dll" />
+    <Content Include="lib\FuncWorks.XNA.XTiledExtensions.pdb" />
+    <Content Include="lib\TiledSharp.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlatformerTestContent\PlatformerTestContent.contentproj">
@@ -139,13 +173,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="PlatformerTest_TemporaryKey.pfx" />
+    <None Include="Properties\app.manifest" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
-      To modify your build process, add your task inside one of the targets below and uncomment it. 
+      To modify your build process, add your task inside one of the targets below and uncomment it.
       Other similar extension points exist, see Microsoft.Common.targets.
       <Target Name="BeforeBuild">
       </Target>

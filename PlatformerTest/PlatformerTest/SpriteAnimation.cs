@@ -290,9 +290,11 @@ namespace PlatformerTest
         public void Draw(SpriteBatch spriteBatch, int XOffset, int YOffset)
         {
             if (bAnimating)
-                spriteBatch.Draw(t2dTexture, v2Position,
-                                CurrentFrameAnimation.FrameRectangle, colorTint,
-                                fRotation, v2Center, 1f, SpriteEffects.None, 0);
+                // v2Center was ruining player center spot
+                spriteBatch.Draw(t2dTexture, v2Position, CurrentFrameAnimation.FrameRectangle, colorTint);
+                //spriteBatch.Draw(t2dTexture, v2Position,
+                //                CurrentFrameAnimation.FrameRectangle, colorTint,
+                //                fRotation, v2Center, 1f, SpriteEffects.None, 0);
         }
     }
 }
