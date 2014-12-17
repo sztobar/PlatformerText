@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using PlatformerTest.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PlatformerTest.CameraGame
 {
@@ -11,14 +7,12 @@ namespace PlatformerTest.CameraGame
     {
         public override void SetPosition(Vector2 target)
         {
-            
             //position = sprite.Position - new Vector2(ProgramConfig.windowWidth / 2, ProgramConfig.windowHeight / 2);
-            position.X = target.X - (ProgramConfig.windowWidth / 2);
-            position.Y = target.Y - (ProgramConfig.windowHeight / 2);
+            position.X = target.X - (ProgramConfig.windowWidth / 2.0f);
+            position.Y = target.Y - (ProgramConfig.windowHeight / 2.0f);
 
             position.X = position.X >= 0 ? position.X : 0;
             position.Y = position.Y >= 0 ? position.Y : 0;
-            position = position;
         }
 
         public override Rectangle GetRectangle()

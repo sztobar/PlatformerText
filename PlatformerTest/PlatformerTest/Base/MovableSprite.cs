@@ -26,7 +26,7 @@ namespace PlatformerTest.Base
         /// Describes if velocity on x and y dimension is
         /// in positive or negative direction(should have either 1 or -1 as values)
         /// </summary>
-        protected Vector2 direction = Vector2.One;
+        protected Point direction = new Point(1, 0);
         /// <summary>
         /// Maximum velocity of the sprite
         /// </summary>
@@ -40,7 +40,7 @@ namespace PlatformerTest.Base
 
         #region properties
 
-        public Vector2 Direction
+        public Point Direction
         {
             get { return direction; }
             set { direction = value; }
@@ -65,7 +65,7 @@ namespace PlatformerTest.Base
         /// <param name="inputState"></param>
         public override void Update(float dt, UserInputState inputState)
         {
-            position += direction * velocity;
+            position += new Vector2(direction.X * velocity.X, direction.Y * velocity.Y);
         }
 
         #endregion

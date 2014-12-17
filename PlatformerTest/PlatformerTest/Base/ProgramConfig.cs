@@ -15,5 +15,7 @@ namespace PlatformerTest.Base
 
         // temporary workaround for working with old Player Class
         public static int[,] LevelTiles = new int[0, 0];
+        // Field for old player class to have reference to new Base.Level class
+        public static Base.Level CurrentLevel;
     }
 }

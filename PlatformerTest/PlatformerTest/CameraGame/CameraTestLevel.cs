@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using FuncWorks.XNA.XTiled;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PlatformerTest.Base;
 
@@ -10,18 +11,17 @@ namespace PlatformerTest.CameraGame
     public class CameraTestLevel : Base.Level
     {
         Map map;
-        readonly Base.Camera camera;
 
         public CameraTestLevel(Base.Camera camera)
-        {
-            this.camera = camera;
-        }
+            : base(camera)
+        { }
 
-        public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
+        public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
             map = content.Load<Map>("tmx/xaton12test2");
             ProgramConfig.LevelTiles = GetLevelTiles();
+            ProgramConfig.CurrentLevel = this;
         }
 
         public override void Initialize()
@@ -33,13 +33,13 @@ namespace PlatformerTest.CameraGame
 
         public override void Draw(SpriteBatch spritebatch)
         {
-            base.Draw(spritebatch);
-
             map.DrawScrollingLayer(spritebatch, 0, camera, Vector2.Zero);
             map.DrawScrollingLayer(spritebatch, 1, camera, new Vector2(0.5f, 1f));
             map.DrawScrollingLayer(spritebatch, 2, camera, Vector2.One);
             //map.DrawScrollingLayer(spritebatch, 3, camera, Vector2.One);
             map.DrawScrollingLayer(spritebatch, 4, camera, Vector2.One);
+
+            base.Draw(spritebatch);
         }
 
         public int[,] GetLevelTiles()

@@ -13,7 +13,7 @@ namespace PlatformerTest
         protected Texture2D _texture;
         protected Vector2 _velocity;
         protected Vector2 _position;
-        protected Direction _direction = Direction.Left;
+        protected Direction _direction = Direction.Right;
         protected int _width;
         protected int _height;
         protected float _rotation = 0f;

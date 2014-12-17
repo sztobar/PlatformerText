@@ -108,6 +108,7 @@
     <Compile Include="Base\Component.cs" />
     <Compile Include="Base\Game.cs" />
     <Compile Include="Base\Level.cs" />
+    <Compile Include="Base\LevelSprite.cs" />
     <Compile Include="Base\MapExtension.cs" />
     <Compile Include="Base\MovableSprite.cs" />
     <Compile Include="Base\Movement.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Base\UserInput.cs" />
     <Compile Include="Base\UserInputState.cs" />
     <Compile Include="Base\Utils.cs" />
+    <Compile Include="CameraGame\NaqBullet.cs" />
     <Compile Include="CameraGame\CameraTestCamera.cs" />
     <Compile Include="CameraGame\CameraTestGame.cs" />
     <Compile Include="CameraGame\CameraTestLevel.cs" />
@@ -122,6 +124,9 @@
     <Compile Include="CameraGame\EightDirectionMovement.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="FrameAnimation.cs" />
+    <Compile Include="Interfaces\IEnemy.cs" />
+    <Compile Include="Interfaces\ILevelDestroyable.cs" />
+    <Compile Include="Interfaces\IObstacle.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Base\ProgramConfig.cs" />

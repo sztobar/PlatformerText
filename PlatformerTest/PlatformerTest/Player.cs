@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
 using PlatformerTest.Base;
+using PlatformerTest.CameraGame;
 
 namespace PlatformerTest
 {
@@ -28,11 +29,24 @@ namespace PlatformerTest
         float _playerFrameLength = 0.1f;//0.1f;
         public float _playerOffset = 231;//462;
         public float _playerHeightOffset = 256.5f;//513;
+        /// <summary>
+        /// Time left in seconds to next shoot enabled
+        /// </summary>
+        private float _shootingDelayLeft = 0;
+        /// <summary>
+        /// Seconds intervals between player shooting
+        /// </summary>
+        private const float _shootingDelay = 0.5f;
 
         #endregion
         #region helper
 
         public Texture2D _collisionTexture;
+
+        /// <summary>
+        /// Vector2 describing point where projectiles appear(when player shoots)
+        /// </summary>
+        public Vector2 ActionPoint { get { return _position + new Vector2(_width/2.0f, _height/2.0f); } }
 
         #endregion
 
@@ -76,6 +90,7 @@ namespace PlatformerTest
             {
                 IsWalking(dt, keyState);
                 IsJumping(dt, keyState);
+                IsShooting(dt, keyState);
             }
             GetDirection(dt, keyState);
         }
@@ -166,6 +181,17 @@ namespace PlatformerTest
                     //}                  
 
                 }
+            }
+        }
+
+        private void IsShooting(float dt, KeyboardState keyState)
+        {
+            if (_shootingDelayLeft > 0) _shootingDelayLeft -= dt;
+            if (keyState.IsKeyDown(Keys.Z) && _shootingDelayLeft <= 0)
+            {
+                var bullet = new NaqBullet(ProgramConfig.CurrentLevel, ActionPoint, _direction);
+                ProgramConfig.CurrentLevel.AddComponent(bullet);
+                _shootingDelayLeft = _shootingDelay;
             }
         }
 

@@ -10,8 +10,8 @@ namespace PlatformerTest.Base
 
         protected Texture2D texture;
         /// <summary>
-        /// Because hitbox rectangle starts from position, its represented
-        /// only in vector(where X is width and Y is height)
+        /// Because hitbox rectangle starts from position, hitbox is represented
+        /// only in Point(where X is width and Y is height)
         /// </summary>
         protected Point hitbox;
         protected Vector2 position;
@@ -39,10 +39,14 @@ namespace PlatformerTest.Base
 
         public int Height { get { return hitbox.Y; } }
 
+        public Rectangle Rectangle { get { return new Rectangle((int) position.X, (int) position.Y, hitbox.X, hitbox.Y); } }
+
         #endregion
 
         #region constructors
 
+        /// <param name="textureSource">path to load texture</param>
+        /// <param name="hitbox">Width and Height of the sprite</param>
         protected Sprite (string textureSource, Point hitbox)
         {
             this.textureSource = textureSource;
@@ -60,9 +64,16 @@ namespace PlatformerTest.Base
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture,
-                new Rectangle((int)position.X, (int)position.Y, hitbox.X, hitbox.Y),
-                Color.White);
+            spriteBatch.Draw(texture, Rectangle, Color.White);
+        }
+
+        #endregion
+
+        #region public methods
+
+        public bool IsColliding(Sprite sprite)
+        {
+            return this.Rectangle.Intersects(sprite.Rectangle);
         }
 
         #endregion
