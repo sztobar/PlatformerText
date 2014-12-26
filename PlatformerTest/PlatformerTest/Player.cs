@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
 using PlatformerTest.Base;
 using PlatformerTest.CameraGame;
+using PlatformerTest.Interfaces;
 
 namespace PlatformerTest
 {
@@ -44,7 +46,7 @@ namespace PlatformerTest
         public Texture2D _collisionTexture;
 
         /// <summary>
-        /// Vector2 describing point where projectiles appear(when player shoots)
+        /// Vector2 describing point where projectiles visible(when player shoots)
         /// </summary>
         public Vector2 ActionPoint { get { return _position + new Vector2(_width/2.0f, _height/2.0f); } }
 
@@ -83,7 +85,7 @@ namespace PlatformerTest
             _animation.Position = _position;
         }
 
-        public void GetInput(float dt, KeyboardState keyState)
+        private void GetInput(float dt, KeyboardState keyState)
         {
             IsClimbing(dt, keyState);
             if (!_climbing)
@@ -189,7 +191,8 @@ namespace PlatformerTest
             if (_shootingDelayLeft > 0) _shootingDelayLeft -= dt;
             if (keyState.IsKeyDown(Keys.Z) && _shootingDelayLeft <= 0)
             {
-                var bullet = new NaqBullet(ProgramConfig.CurrentLevel, ActionPoint, _direction);
+                var bulletDirection = new Point((int) _direction, 0);
+                var bullet = new NaqBullet(ProgramConfig.CurrentLevel, ActionPoint, bulletDirection);
                 ProgramConfig.CurrentLevel.AddComponent(bullet);
                 _shootingDelayLeft = _shootingDelay;
             }
@@ -314,109 +317,134 @@ namespace PlatformerTest
             _velocity.Y = Math.Min(_velocity.Y, _maxYVelocity);
         }
 
-        public void updateMap() { 
-           
+        /// <summary>
+        /// If Naq arent flashing(invicibility delay after hit)
+        /// Check if he is colliding any enemy
+        /// </summary>
+        private void CheckEnemyCollisions()
+        {
+            if (_flashDuration > 0) return;
+            var level = ProgramConfig.CurrentLevel;
+            var enemies = level.GetEnemiesInViewport();
+            var boundingBox = BoundingBox;
+            if (enemies.Select(enemy => enemy.Rectangle).Any(boundingBox.Intersects))
+            {
+                const float duration = 1.5f;
+                Flash(duration * 2, 0.1f);
+                Block(duration);
+            }
         }
 
         public void Update(float dt, KeyboardState keyState, GameTime gameTime)
         {
-            GetInput(dt, keyState);
-            CheckCollisions(dt);
-
-            //checking direction to figureout which animation have to be played:
-            if (!_climbing && !_landing && !_jumpingStatus)
+            if (!(_blockDuration > 0))
             {
-                if (_velocity.X > 0 && _velocity.Y == 0
-                    && Sprite.CurrentAnimation != "runRight"
-                    && _direction == Direction.Right)
-                {
-                    //play run right animation
-                    Sprite.CurrentAnimation = "runRight";
-                }
-                else if (_velocity.X > 0 && _velocity.Y == 0
-                    && Sprite.CurrentAnimation != "runLeft"
-                    && _direction == Direction.Left)
-                {
-                    //play run left animation
-                    Sprite.CurrentAnimation = "runLeft";
-                }else if(_velocity.Y>0){
-                    if (_direction == Direction.Left)
-                    {
-                        Sprite.CurrentAnimation = "jumpDownLoopLeft";
-                    }
-                    else {
-                        Sprite.CurrentAnimation = "jumpDownLoopRight";
-                    }
-                    _jumpingStatus = true;
-                }
-            }
-            else {
-                if (_jumpingStatus) {
+                GetInput(dt, keyState);
+                CheckCollisions(dt);
+                CheckEnemyCollisions();
 
-                    if (_direction == Direction.Right
-                        && Sprite.CurrentAnimation != "preJumpRight"
-                        && Sprite.CurrentAnimation != "preJumpLeft"
-                        && Sprite.CurrentAnimation != "jumpUpLoopRight"
-                        && _velocity.Y>-3f
-                        ) {
+                //checking direction to figureout which animation have to be played:
+                if (!_climbing && !_landing && !_jumpingStatus)
+                {
+                    if (_velocity.X > 0 && _velocity.Y == 0
+                        && Sprite.CurrentAnimation != "runRight"
+                        && _direction == Direction.Right)
+                    {
+                        //play run right animation
+                        Sprite.CurrentAnimation = "runRight";
+                    }
+                    else if (_velocity.X > 0 && _velocity.Y == 0
+                             && Sprite.CurrentAnimation != "runLeft"
+                             && _direction == Direction.Left)
+                    {
+                        //play run left animation
+                        Sprite.CurrentAnimation = "runLeft";
+                    }
+                    else if (_velocity.Y > 0)
+                    {
+                        if (_direction == Direction.Left)
+                        {
+                            Sprite.CurrentAnimation = "jumpDownLoopLeft";
+                        }
+                        else
+                        {
+                            Sprite.CurrentAnimation = "jumpDownLoopRight";
+                        }
+                        _jumpingStatus = true;
+                    }
+                }
+                else
+                {
+                    if (_jumpingStatus)
+                    {
+
+                        if (_direction == Direction.Right
+                            && Sprite.CurrentAnimation != "preJumpRight"
+                            && Sprite.CurrentAnimation != "preJumpLeft"
+                            && Sprite.CurrentAnimation != "jumpUpLoopRight"
+                            && _velocity.Y > -3f
+                            )
+                        {
                             //jump loop up right
                             Sprite.CurrentAnimation = "jumpUpLoopRight";
-                    }
+                        }
 
-                    if (_direction == Direction.Right
-                        && _velocity.Y > -3f
-                        && _velocity.Y < 3f
-                        && Sprite.CurrentAnimation != "jumpMaxPointRight"
-                        ) { 
-                        // jump Max point right
-                        Sprite.CurrentAnimation = "jumpMaxPointRight";
-                    }
+                        if (_direction == Direction.Right
+                            && _velocity.Y > -3f
+                            && _velocity.Y < 3f
+                            && Sprite.CurrentAnimation != "jumpMaxPointRight"
+                            )
+                        {
+                            // jump Max point right
+                            Sprite.CurrentAnimation = "jumpMaxPointRight";
+                        }
 
-                    if(_direction == Direction.Right
-                        && _velocity.Y < 3f
-                        && Sprite.CurrentAnimation != "landingRight"
-                        && Sprite.CurrentAnimation != "jumpDownLoopRight"
-                        ){
-                        //jump loop down right
+                        if (_direction == Direction.Right
+                            && _velocity.Y < 3f
+                            && Sprite.CurrentAnimation != "landingRight"
+                            && Sprite.CurrentAnimation != "jumpDownLoopRight"
+                            )
+                        {
+                            //jump loop down right
                             Sprite.CurrentAnimation = "jumpDownLoopRight";
+                        }
+
+                        // left side
+
+                        if (_direction == Direction.Left
+                            && Sprite.CurrentAnimation != "preJumpRight"
+                            && Sprite.CurrentAnimation != "preJumpLeft"
+                            && Sprite.CurrentAnimation != "jumpUpLoopLeft"
+                            && _velocity.Y > -3f
+                            )
+                        {
+                            //jump loop up Left
+                            Sprite.CurrentAnimation = "jumpUpLoopLeft";
+                        }
+
+                        if (_direction == Direction.Left
+                            && _velocity.Y > -3f
+                            && _velocity.Y < 3f
+                            && Sprite.CurrentAnimation != "jumpMaxPointLeft"
+                            )
+                        {
+                            // jump Max point Left
+                            Sprite.CurrentAnimation = "jumpMaxPointLeft";
+                        }
+
+                        if (_direction == Direction.Left
+                            && _velocity.Y < 3f
+                            && Sprite.CurrentAnimation != "landingLeft"
+                            && Sprite.CurrentAnimation != "jumpDownLoopLeft"
+                            )
+                        {
+                            //jump loop down Left
+                            Sprite.CurrentAnimation = "jumpDownLoopLeft";
+                        }
+
                     }
-
-                    // left side
-
-                    if (_direction == Direction.Left
-                        && Sprite.CurrentAnimation != "preJumpRight"
-                        && Sprite.CurrentAnimation != "preJumpLeft"
-                        && Sprite.CurrentAnimation != "jumpUpLoopLeft"
-                        && _velocity.Y > -3f
-                        )
-                    {
-                        //jump loop up Left
-                        Sprite.CurrentAnimation = "jumpUpLoopLeft";
-                    }
-
-                    if (_direction == Direction.Left
-                        && _velocity.Y > -3f
-                        && _velocity.Y < 3f
-                        && Sprite.CurrentAnimation != "jumpMaxPointLeft"
-                        )
-                    {
-                        // jump Max point Left
-                        Sprite.CurrentAnimation = "jumpMaxPointLeft";
-                    }
-
-                    if (_direction == Direction.Left
-                        && _velocity.Y < 3f
-                        && Sprite.CurrentAnimation != "landingLeft"
-                        && Sprite.CurrentAnimation != "jumpDownLoopLeft"
-                        )
-                    {
-                        //jump loop down Left
-                        Sprite.CurrentAnimation = "jumpDownLoopLeft";
-                    }
-
                 }
             }
-            
             _animation.Update(gameTime);
             base.Update(dt);
         }

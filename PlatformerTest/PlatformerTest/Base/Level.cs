@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms.VisualStyles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -86,11 +88,19 @@ namespace PlatformerTest.Base
         public override void Update(float dt, UserInputState inputState)
         {
             base.Update(dt, inputState);
-            // for iterates backwards because components can destroy themselves during this method
+
+            /**
+             * During update of component they could destroy themselves
+             * or other components(destroy means nulling itself in list)
+             * so before update we must check if component on every index
+             * isn't null, and after loop we remove all nulls
+             */
             for (var i = components.Count - 1; i >= 0; --i)
             {
+                if (components[i] == null) continue;
                 components[i].Update(dt, inputState);
             }
+            components.RemoveAll(component => component == null);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -141,7 +151,8 @@ namespace PlatformerTest.Base
 
         public void DestroyComponent(LevelSprite component)
         {
-            components.Remove(component);
+            components[components.IndexOf(component)] = null;
+            //components.Remove(component);
         }
 
         /// <summary>
@@ -185,8 +196,13 @@ namespace PlatformerTest.Base
             var sprite = component.Rectangle;
             var view = View;
 
-            return sprite.Top >= view.Top && sprite.Left >= view.Left && sprite.Right <= view.Right &&
-                   sprite.Bottom <= view.Bottom;
+            return sprite.Bottom>= view.Top && sprite.Right>= view.Left && sprite.Left <= view.Right &&
+                   sprite.Top <= view.Bottom;
+        }
+
+        public EnemySprite[] GetEnemiesInViewport()
+        {
+            return components.OfType<EnemySprite>().Where(IsInView).ToArray();
         }
 
         #endregion

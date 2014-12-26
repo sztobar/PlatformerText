@@ -35,6 +35,26 @@ namespace PlatformerTest.Base
         /// Minimum velocity of the spirte(usually zero)
         /// </summary>
         protected Vector2 minVelocity = Vector2.Zero;
+        /// <summary>
+        /// Time in which tickTime is changing visible flag
+        /// </summary>
+        protected float flashDuration;
+        /// <summary>
+        /// Time between toogling visible flag
+        /// </summary>
+        protected float tickTime;
+        /// <summary>
+        /// Duration to next visible toogling
+        /// </summary>
+        protected float tickDuration;
+        /// <summary>
+        /// Whetever Draw ActiveObject or not
+        /// </summary>
+        protected bool visible = true;
+        /// <summary>
+        /// Time in miliseconds in which ActiveObject can't move
+        /// </summary>
+        protected float blockDuration;
 
         #endregion
 
@@ -65,7 +85,28 @@ namespace PlatformerTest.Base
         /// <param name="inputState"></param>
         public override void Update(float dt, UserInputState inputState)
         {
-            position += new Vector2(direction.X * velocity.X, direction.Y * velocity.Y);
+            if (flashDuration > 0)
+            {
+                if ((tickTime -= dt) <= 0)
+                {
+                    visible = !visible;
+                    tickTime = tickDuration;
+                }
+
+                if ((flashDuration -= dt) <= 0)
+                {
+                    visible = true;
+                }
+            }
+
+            if (blockDuration > 0)
+            {
+                blockDuration -= dt;
+            }
+            else
+            {
+                position += new Vector2(direction.X*velocity.X, direction.Y*velocity.Y);
+            }
         }
 
         #endregion
@@ -110,8 +151,29 @@ namespace PlatformerTest.Base
                 velocity.Y -= delta;
         }
 
+        /// <summary>
+        /// Makes ActiveObject Flash
+        /// </summary>
+        /// <param name="duration">Time in seconds</param>
+        /// <param name="tickTime">Time in seconds</param>
+        public void Flash(float duration, float tickTime)
+        {
+            flashDuration = duration;
+            visible = false;
+            this.tickTime = tickTime;
+            tickDuration = tickTime;
+        }
+
+        /// <summary>
+        /// Make ActiveObject omit its Update Method
+        /// To be used in hurt phase
+        /// </summary>
+        /// <param name="duration">Time in seconds</param>
+        public void Block(float duration)
+        {
+            blockDuration = duration;
+        }
+
         #endregion
-
-
     }
 }

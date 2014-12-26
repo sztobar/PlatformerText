@@ -29,6 +29,12 @@ namespace PlatformerTest.CameraGame
             Width = 120;
             Height = 120;
             //showGrid = true;
+
+            AddComponent(new CameraTestEnemy(this, new Vector2(21, 4) * ProgramConfig.tileSize));
+            AddComponent(new CameraTestEnemy(this, new Vector2(20, 6) * ProgramConfig.tileSize));
+            AddComponent(new CameraTestEnemy(this, new Vector2(5, 1) * ProgramConfig.tileSize));
+            AddComponent(new CameraTestEnemy(this, new Vector2(26, 6) * ProgramConfig.tileSize));
+            AddComponent(new CameraTestEnemy(this, new Vector2(33, 3) * ProgramConfig.tileSize));
         }
 
         public override void Draw(SpriteBatch spritebatch)

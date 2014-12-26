@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using System.Linq;
+using Microsoft.Xna.Framework;
 using PlatformerTest.Base;
 using PlatformerTest.Interfaces;
 
@@ -10,20 +10,19 @@ namespace PlatformerTest.CameraGame
     /// </summary>
     class NaqBullet : LevelSprite
     {
-        private readonly Direction direction;
-        private readonly Vector2 velocity = new Vector2(10.0f, 0);
+        private const byte power = 10;
 
-        public NaqBullet(Base.Level level, Vector2 position, Direction direction)
+        public NaqBullet(Base.Level level, Vector2 position, Point direction)
             : base(level, "player/cameraPlayer", new Point(10, 10))
         {
             this.position = position;
             this.direction = direction;
+            this.velocity = new Vector2(10.0f, 0);
         }
 
         public override void Update(float dt, UserInputState inputState)
         {
             base.Update(dt, inputState);
-            this.position += (int) this.direction*this.velocity;
 
             if (!level.IsInView(this) || level.IsCollidingObstacle(this))
             {
@@ -31,15 +30,17 @@ namespace PlatformerTest.CameraGame
                 return;
             }
 
-            level.ForEachComponent(sprite =>
+            var enemies = level.GetEnemiesInViewport();
+            foreach (var enemy in enemies)
             {
-                if (sprite == this || !IsColliding(sprite)) return true;
-                if (sprite is IEnemy)
+                if (IsColliding(enemy))
                 {
-
+                    enemy.Lives -= power;
+                    enemy.Flash(0.5f, 0.1f);
+                    Destroy();
+                    break;
                 }
-                return true;
-            });
+            }
         }
     }
 }

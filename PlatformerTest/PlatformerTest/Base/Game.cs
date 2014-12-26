@@ -26,8 +26,6 @@ namespace PlatformerTest.Base
             Content.RootDirectory = "Content";
             System.Windows.Forms.Form window = (System.Windows.Forms.Form)System.Windows.Forms.Form.FromHandle(this.Window.Handle);
             window.MaximizeBox = true;
-            
-
         }
 
         public FormWindowState WindowState{

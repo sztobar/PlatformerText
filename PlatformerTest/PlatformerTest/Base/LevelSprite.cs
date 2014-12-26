@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using PlatformerTest.Interfaces;
 
 namespace PlatformerTest.Base
@@ -8,9 +9,9 @@ namespace PlatformerTest.Base
     /// Class for sprite dynamically added to Base.Level through AddComponent method
     /// Initialization & LoadContent are invoked in Base.Level right after LevelSprite constructor
     /// </summary>
-    public class LevelSprite : Sprite, ILevelDestroyable
+    public class LevelSprite : MovableSprite, ILevelDestroyable
     {
-        protected Base.Level level;
+        protected readonly Base.Level level;
 
         /// <summary>
         /// 
@@ -25,6 +26,16 @@ namespace PlatformerTest.Base
             this.level = level;
             if (addComponent)
                 level.AddComponent(this);
+        }
+
+        /// <summary>
+        /// Draw LevelSprite only if it is in camera viewport
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (!level.IsInView(this)) return; 
+            base.Draw(spriteBatch);
         }
 
         #region implements

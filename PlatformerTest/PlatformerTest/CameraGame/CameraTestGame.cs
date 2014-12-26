@@ -26,7 +26,6 @@ namespace PlatformerTest.CameraGame
             base.Initialize();
             player.Initialize();
             level.Initialize();
-            
         }
 
         protected override void LoadContent()

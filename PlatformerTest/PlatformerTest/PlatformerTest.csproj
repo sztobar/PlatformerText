@@ -106,6 +106,7 @@
     <Compile Include="ActiveObject.cs" />
     <Compile Include="Base\Camera.cs" />
     <Compile Include="Base\Component.cs" />
+    <Compile Include="Base\EnemySprite.cs" />
     <Compile Include="Base\Game.cs" />
     <Compile Include="Base\Level.cs" />
     <Compile Include="Base\LevelSprite.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Base\UserInput.cs" />
     <Compile Include="Base\UserInputState.cs" />
     <Compile Include="Base\Utils.cs" />
+    <Compile Include="CameraGame\CameraTestEnemy.cs" />
     <Compile Include="CameraGame\NaqBullet.cs" />
     <Compile Include="CameraGame\CameraTestCamera.cs" />
     <Compile Include="CameraGame\CameraTestGame.cs" />
